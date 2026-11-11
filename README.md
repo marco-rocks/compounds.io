@@ -1,6 +1,6 @@
 # compounds.io
 
-> *"O poder da consistência e dos juros composts aplicado à B3."*
+> *"O poder da consistência e dos juros compostos aplicado à B3."*
 
 O **compounds.io** é uma plataforma e API REST desenvolvida em Python para seleção automatizada de ações da B3.
 
