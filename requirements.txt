@@ -1,46 +1,46 @@
-appdirs==1.4.4
-beautifulsoup4 @ file:///home/conda/feedstock_root/build_artifacts/beautifulsoup4_1780853104376/work
-blinker==1.9.0
-brotlicffi @ file:///C:/Users/task_179339331222531/croot/brotlicffi_1793393807789/work
-certifi @ file:///home/task_179300541075950/croot/certifi_1793006633205/work/certifi
-cffi @ file:///C:/Users/task_179192754093228/croot/cffi_1791927827108/work
-charset-normalizer @ file:///C:/Users/task_179200842733560/croot/charset-normalizer_1792008743186/work
-click==8.5.1
-curl_cffi @ file:///D:/bld/bld/rattler-build_curl-cffi_1789723965/work
-Flask==3.1.3
-frozendict @ file:///C:/Users/task_179213154604051/croot/frozendict_1792131635068/work
-gunicorn==27.0.1
-html5lib @ file:///Users/ktietz/demo/mc3/conda-bld/html5lib_1629144453894/work
-idna @ file:///C:/Users/task_179200821978922/croot/idna_1792008739823/work
-itsdangerous==2.2.0
-Jinja2==3.1.6
-lxml @ file:///C:/Users/task_179193661619616/croot/lxml_1791936789119/work
-markdown-it-py @ file:///C:/Users/task_179201982396001/croot/markdown-it-py_1792019929799/work
-MarkupSafe==3.0.4
-mdurl @ file:///C:/Users/task_179201611971903/croot/mdurl_1792016224165/work
-mkl-service @ file:///C:/Users/task_179214682856392/croot/mkl-service_1792146908666/work
-mkl_fft @ file:///C:/Users/task_179252305500380/croot/mkl_fft_1792523214055/work
-mkl_random @ file:///C:/Users/task_179245540171830/croot/mkl_random_1792455532699/work
-multitasking @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_multitasking_1788376038/work
-numpy @ file:///C:/Users/task_179249779233829/croot/numpy_and_numpy_base_1792498070010/work/dist/numpy-2.5.4-cp315-cp315-win_amd64.whl#sha256=e466930f01c80b051a587441b772a38668e5cb1403ccb325a80ff11f064b4f8a
-pandas @ file:///C:/Users/task_179381573225816/croot/pandas_1793815809828/work
-peewee @ file:///D:/bld/bld/rattler-build_peewee_1791419936/work
-platformdirs @ file:///C:/Users/task_179391022540875/croot/platformdirs_1793910459695/work
-protobuf @ file:///C:/Users/task_179193367220943/croot/protobuf_1791933771105/work/bazel-bin/python/dist/protobuf-7.35.1-cp315-abi3-win_amd64.whl#sha256=3b7d176e68e3ef22be711d059d368f4fa677f048f21afd8d2bce877c2845eb78
-pycparser @ file:///C:/Users/task_179251308310763/croot/pycparser_1792513171003/work
-Pygments @ file:///C:/Users/task_179201611003313/croot/pygments_1792016215257/work
-PySocks @ file:///C:/Users/task_179192732029581/croot/pysocks_1791927404028/work
-python-dateutil @ file:///C:/Users/task_179201956680594/croot/python-dateutil_1792019698508/work
-pytz @ file:///C:/Users/task_179251281295066/croot/pytz_1792512894740/work
-requests @ file:///C:/Users/task_179211296951747/croot/requests_1792113240822/work
-rich @ file:///C:/Users/task_179327649930758/croot/rich_1793276632371/work
-six @ file:///C:/Users/task_179201521706316/croot/six_1792015727523/work
-soupsieve @ file:///C:/Users/task_179201587789742/croot/soupsieve_1792016043312/work
-typing_extensions @ file:///C:/Users/task_179201587115892/croot/typing_extensions_1792015970336/work
-tzdata @ file:///home/task_179371895666212/croot/python-tzdata_1793719013140/work
-urllib3 @ file:///C:/Users/task_179201037881633/croot/urllib3_1792010723526/work
-webencodings @ file:///C:/Users/task_179201609608990/croot/webencodings_1792016196884/work
-websockets @ file:///C:/Users/task_179363533224382/croot/websockets_1793635420878/work
-Werkzeug==3.1.9
-win_inet_pton @ file:///C:/Users/task_179192669176905/croot/win_inet_pton_1791926913818/work
-yfinance @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_yfinance_1788291427/work
+    appdirs==1.4.4
+    beautifulsoup4 
+    blinker==1.9.0
+    brotlicffi 
+    certifi 
+    cffi 
+    charset-normalizer 
+    click==8.5.1
+    curl_cffi 
+    Flask==3.1.3
+    frozendict 
+    gunicorn==27.0.1
+    html5lib 
+    idna 
+    itsdangerous==2.2.0
+    Jinja2==3.1.6
+    lxml 
+    markdown-it-py 
+    MarkupSafe==3.0.4
+    mdurl 
+    mkl-service 
+    mkl_fft 
+    mkl_random 
+    multitasking 
+    numpy 
+    pandas 
+    peewee 
+    platformdirs 
+    protobuf 
+    pycparser 
+    Pygments 
+    PySocks 
+    python-dateutil 
+    pytz 
+    requests 
+    rich 
+    six 
+    soupsieve 
+    typing_extensions 
+    tzdata 
+    urllib3 
+    webencodings 
+    websockets 
+    Werkzeug==3.1.9
+    win_inet_pton 
+    yfinance 
