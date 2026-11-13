@@ -1,3 +1,4 @@
+import gc
 import pandas as pd
 import yfinance as yf
 from datetime import datetime
@@ -72,11 +73,10 @@ def _obter_preco_atual(stock):
         return 0.0
     
 def processar_analise_besst(limite_testes = None):
-    
     """
     Estrutura de varredura completa nas ações dos
     setores BESST, aplicando as regras de lucros
-    consistentes e indicador de retorno mínimo
+    consistentes e indicador de retorno mínimo (Otimizada para RAM)
     """
     
     tickers, dict_nomes = obter_lista_besst()
@@ -91,16 +91,15 @@ def processar_analise_besst(limite_testes = None):
     
     for t in tickers: 
         print(f"Analisando {t}...")
+        stock = None
         try:
             stock = yf.Ticker(t)
             
             # 1. Valida regra de lucros (10 anos)
-            
             if not _verificar_lucros_consistentes(stock):
                 continue
             
             # 2. Calculo da média de dividendos (5 anos)
-           
             media_dividendos = _calcular_media_dividendos(stock)
             
             if media_dividendos <= 0:
@@ -111,9 +110,8 @@ def processar_analise_besst(limite_testes = None):
             if preco_fechamento <= 0:
                 continue
             
-            #4. Calcula o indicador de retorno aplicando o filtro de (>= 6%)
-            
-            taxa_retorno = (media_dividendos/preco_fechamento) * 100
+            # 4. Calcula o indicador de retorno aplicando o filtro de (>= 6%)
+            taxa_retorno = (media_dividendos / preco_fechamento) * 100
             
             if taxa_retorno < 6.0:
                 continue
@@ -125,15 +123,22 @@ def processar_analise_besst(limite_testes = None):
             )
         
             resultados.append({
-            "Ticker": ticker_limpo,
-            "Nome": nome_empresa,
-            "Preço Atual (R$)": round(preco_fechamento, 2),
-            "Média Div. (5 anos)": round(media_dividendos, 4),
-            "Indicador (%)": round(taxa_retorno, 2),
+                "Ticker": ticker_limpo,
+                "Nome": nome_empresa,
+                "Preço Atual (R$)": round(preco_fechamento, 2),
+                "Média Div. (5 anos)": round(media_dividendos, 4),
+                "Indicador (%)": round(taxa_retorno, 2),
             })
         
-        except Exception:
+        except Exception as e:
+            print(f"Erro ao processar {t}: {e}")
             continue
+            
+        finally:
+            # Força o descarte do objeto da memória a cada ciclo do loop
+            if stock is not None:
+                del stock
+            gc.collect()
         
     df_resultado = pd.DataFrame(resultados)
     
