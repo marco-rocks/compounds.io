@@ -1,5 +1,6 @@
 import gc
 import pandas as pd
+import requests
 import yfinance as yf
 from datetime import datetime
 from src.scraper import obter_lista_besst
@@ -57,12 +58,10 @@ def _calcular_media_dividendos(stock):
         return 0.0
 
 def _obter_preco_atual(stock):
-
     """
     Buscando preço de fechamento mais recente da ação
     """
-    
-    try:     
+    try:    
         hist = stock.history(period='5d')
         
         if hist.empty:
@@ -76,7 +75,7 @@ def processar_analise_besst(limite_testes = None):
     """
     Estrutura de varredura completa nas ações dos
     setores BESST, aplicando as regras de lucros
-    consistentes e indicador de retorno mínimo (Otimizada para RAM)
+    consistentes e indicador de retorno mínimo
     """
     
     tickers, dict_nomes = obter_lista_besst()
@@ -92,8 +91,10 @@ def processar_analise_besst(limite_testes = None):
     for t in tickers: 
         print(f"Analisando {t}...")
         stock = None
+        session = None
         try:
-            stock = yf.Ticker(t)
+            session = requests.Session()
+            stock = yf.Ticker(t, session=session)
             
             # 1. Valida regra de lucros (10 anos)
             if not _verificar_lucros_consistentes(stock):
@@ -110,8 +111,8 @@ def processar_analise_besst(limite_testes = None):
             if preco_fechamento <= 0:
                 continue
             
-            # 4. Calcula o indicador de retorno aplicando o filtro de (>= 6%)
-            taxa_retorno = (media_dividendos / preco_fechamento) * 100
+            #4. Calcula o indicador de retorno aplicando o filtro de (>= 6%)
+            taxa_retorno = (media_dividendos/preco_fechamento) * 100
             
             if taxa_retorno < 6.0:
                 continue
@@ -123,21 +124,23 @@ def processar_analise_besst(limite_testes = None):
             )
         
             resultados.append({
-                "Ticker": ticker_limpo,
-                "Nome": nome_empresa,
-                "Preço Atual (R$)": round(preco_fechamento, 2),
-                "Média Div. (5 anos)": round(media_dividendos, 4),
-                "Indicador (%)": round(taxa_retorno, 2),
+            "Ticker": ticker_limpo,
+            "Nome": nome_empresa,
+            "Preço Atual (R$)": round(preco_fechamento, 2),
+            "Média Div. (5 anos)": round(media_dividendos, 4),
+            "Indicador (%)": round(taxa_retorno, 2),
             })
         
-        except Exception as e:
-            print(f"Erro ao processar {t}: {e}")
+        except Exception:
             continue
             
         finally:
-            # Força o descarte do objeto da memória a cada ciclo do loop
-            if stock is not None:
-                del stock
+            if session is not None:
+                try:
+                    session.close()
+                except:
+                    pass
+            stock = None
             gc.collect()
         
     df_resultado = pd.DataFrame(resultados)
@@ -151,15 +154,14 @@ def processar_analise_besst(limite_testes = None):
     return df_resultado
 
 def processar_ativo_individual(ticker_str):
-    
     """
     Recebe um ticker bruto (ex: 'PETR4' ou 'PETR4.SA'),
     consulta o yfinance e retorna todos os indicadores fundamentalistas
     sob a ótica da metodologia, independentemente de passar ou não no filtro final.
     """
-    
+    session = None
+    stock = None
     try:
-        
         t = ticker_str.strip().upper()
         
         if t.endswith("F") and len(t):
@@ -168,7 +170,8 @@ def processar_ativo_individual(ticker_str):
         t = t + ".SA"
         
         ticker_limpo = t.replace(".SA", "")
-        stock = yf.Ticker(t)
+        session = requests.Session()
+        stock = yf.Ticker(t, session=session)
         
         passou_lucro = _verificar_lucros_consistentes(stock)
         media_dividendos = _calcular_media_dividendos(stock)
@@ -183,7 +186,7 @@ def processar_ativo_individual(ticker_str):
             else 0
         )
         
-        return{
+        return {
             "Ticker": ticker_limpo,
             "Preço Atual (R$)": round(preco, 2),
             "Média Div. (5 anos)": round(media_dividendos, 4),
@@ -197,3 +200,12 @@ def processar_ativo_individual(ticker_str):
     
     except Exception as e:
         return {"erro": str(e)}
+        
+    finally:
+        if session is not None:
+            try:
+                session.close()
+            except:
+                pass
+        stock = None
+        gc.collect()
