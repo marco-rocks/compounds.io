@@ -144,3 +144,51 @@ def processar_analise_besst(limite_testes = None):
         ).reset_index(drop=True)
         
     return df_resultado
+
+def processar_ativo_individual(ticker_str):
+    
+    """
+    Recebe um ticker bruto (ex: 'PETR4' ou 'PETR4.SA'),
+    consulta o yfinance e retorna todos os indicadores fundamentalistas
+    sob a ótica da metodologia, independentemente de passar ou não no filtro final.
+    """
+    
+    try:
+        
+        t = ticker_str.strip().upper()
+        
+        if t.endswith("F") and len(t):
+            t = t[:-1]
+            
+        t = t + ".SA"
+        
+        ticker_limpo = t.replace(".SA", "")
+        stock = yf.Ticker(t)
+        
+        passou_lucro = _verificar_lucros_consistentes(stock)
+        media_dividendos = _calcular_media_dividendos(stock)
+        preco = _obter_preco_atual(stock)
+        
+        if preco <= 0:
+            return {"erro": "O ativo solicitado não foi encontrado ou a cotação está indisponível"}
+        
+        taxa_retorno = (
+            (media_dividendos/preco) * 100
+            if media_dividendos > 0
+            else 0
+        )
+        
+        return{
+            "Ticker": ticker_limpo,
+            "Preço Atual (R$)": round(preco, 2),
+            "Média Div. (5 anos)": round(media_dividendos, 4),
+            "Indicador (%)": round(taxa_retorno, 2),
+            "Criterio_Lucro_10anos": passou_lucro,
+            "Criterio_Yield_Maior_6porcento": taxa_retorno >= 6.0,
+            "Aprovado_Geral": (
+                passou_lucro and media_dividendos > 0 and taxa_retorno >= 6.0
+            ),
+        }
+    
+    except Exception as e:
+        return {"erro": str(e)}

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>compounds.io | Screener & Analytics B3</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Ativa a rolagem suave para links de âncora */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-black tracking-tight text-black">compounds<span class="text-emerald-600">.io</span></span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600 items-center">
+                <a href="#" class="hover:text-black transition-colors flex items-center space-x-1.5">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <span>Início</span>
+                </a>
+                <a href="#documentacao" class="hover:text-black transition-colors flex items-center space-x-1.5">
+                    <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span>Documentação</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section class="relative bg-slate-900 text-white py-20 lg:py-28 bg-cover bg-center" style="background-image: url('{{ url_for('static', filename='banner.jpg') }}');">
+        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px]"></div>
+
+        <div class="relative max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8 space-y-6">
+                <span class="inline-block bg-emerald-500/20 text-emerald-400 font-semibold px-3.5 py-1.5 rounded-full text-xs uppercase tracking-wider border border-emerald-500/30">
+                    Plataforma Quantitativa B3
+                </span>
+                <h1 class="text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
+                    Análise Quantitativa para Longo Prazo
+                </h1>
+                <p class="text-slate-300 text-base lg:text-lg max-w-2xl leading-relaxed">
+                    Ferramenta automatizada de triagem baseada na metodologia de valor e nos princípios clássicos do Buy and Hold para o mercado brasileiro.
+                </p>
+                <div>
+                    <button onclick="executarVarreduraBesst()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3.5 px-6 rounded-xl text-sm transition-all shadow-lg flex items-center space-x-2 cursor-pointer">
+                        <span>🔍 Executar Varredura Global BESST</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Branca com Pesquisa e Tópicos de Ajuda -->
+    <section class="max-w-7xl mx-auto px-6 -mt-10 relative z-20 mb-16 w-full">
+        
+        <!-- Card de Análise de Ativo Específico -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xl p-8 mb-16">
+            <div class="max-w-2xl mx-auto text-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">Análise de Ativo Específico</h2>
+                <p class="text-slate-500 text-sm mt-1">Digite o ticker de qualquer ação da B3 para inspecionar sua saúde financeira individual.</p>
+            </div>
+            
+            <div class="max-w-xl mx-auto flex gap-3">
+                <input type="text" id="tickerInput" placeholder="Ex: BBAS3, PETR4, VALE3" class="flex-grow bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 uppercase font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                <button onclick="analisarTickerUnico()" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all shadow-md cursor-pointer">
+                    Analisar
+                </button>
+            </div>
+        </div>
+
+        <!-- Tópicos de Ajuda -->
+        <div class="text-center mb-10">
+            <h3 class="text-xl font-bold text-slate-900">Como funciona o método?</h3>
+            <p class="text-slate-500 text-sm mt-1">Conheça os pilares quantitativos que estruturam as análises do compounds.io.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <!-- Tópico 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Setores Perenes (BESST)</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed">Foco exclusivo nos setores essenciais da economia: Bancos, Energia, Saneamento, Seguros e Telecomunicações.</p>
+                </div>
+            </div>
+
+            <!-- Tópico 2 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Lucros Consistentes</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed">Validação rigorosa de histórico estrito com lucros líquidos positivos ininterruptos nos últimos 10 anos.</p>
+                </div>
+            </div>
+
+            <!-- Tópico 3 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                    <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="font-bold text-slate-900 mb-2">Dividend Yield Atrativo</h4>
+                    <p class="text-slate-600 text-xs leading-relaxed">Filtro quantitativo de retorno via dividendos superior a 6% ao ano com base na média dos últimos 5 anos.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Documentação Redesenhada com Badges Amigáveis -->
+        <div id="documentacao" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-8 lg:p-12 scroll-mt-24">
+            <div class="max-w-3xl mb-8">
+                <span class="text-xs font-bold text-emerald-600 tracking-wider uppercase bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">Arquitetura de Dados</span>
+                <h3 class="text-2xl font-bold text-slate-900 mt-3">Processo de Extração e Pipeline</h3>
+                <p class="text-slate-600 text-sm mt-1 leading-relaxed">
+                    Entenda como o compounds.io orquestra a captura, tratamento e validação dos dados fundamentalistas em tempo real.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Passo 1 -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-black text-slate-400 block mb-2">PASSO 01</span>
+                        <h4 class="font-bold text-slate-900 text-sm mb-2">Mapeamento BESST</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Varredura inicial dos ativos da bolsa segmentando os setores essenciais regulados.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-200">
+                        <span class="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/60">
+                            Regulados & Perenes
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Passo 2 -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-black text-slate-400 block mb-2">PASSO 02</span>
+                        <h4 class="font-bold text-slate-900 text-sm mb-2">Ingestão DRE (10 Anos)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Consulta automatizada via motor financeiro para apurar lucros líquidos históricos.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-200">
+                        <span class="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/60">
+                            Histórico 10 Anos
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Passo 3 -->
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-black text-slate-400 block mb-2">PASSO 03</span>
+                        <h4 class="font-bold text-slate-900 text-sm mb-2">Validação de Yield (>6%)</h4>
+                        <p class="text-slate-600 text-xs leading-relaxed">Cruzamento da média de dividendos dos últimos 5 anos com a cotação de fechamento.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-200">
+                        <span class="inline-flex items-center text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200/60">
+                            Média 5 Anos (&gt;6%)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Main Container para Resultados Dinâmicos -->
+    <main class="max-w-7xl mx-auto px-6 pb-16 w-full flex-grow">
+        <div id="resultadoContainer" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm p-8 transition-all">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                <h3 id="resultadoTitulo" class="font-bold text-slate-900 text-xl">Resultados da Análise</h3>
+                <span id="loadingSpinner" class="hidden text-xs text-emerald-600 font-bold uppercase tracking-wider animate-pulse flex items-center space-x-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span>Processando dados na B3...</span>
+                </span>
+            </div>
+            
+            <div id="resultadoConteudo" class="overflow-x-auto">
+                <!-- Conteúdo injetado via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 compounds.io • Ferramenta educacional de pesquisa quantitativa.</p>
+    </footer>
+
+    <!-- JavaScript com requisições POST e feedback dinâmico -->
+    <script>
+        const spinner = document.getElementById('loadingSpinner');
+        const container = document.getElementById('resultadoContainer');
+        const titulo = document.getElementById('resultadoTitulo');
+        const conteudo = document.getElementById('resultadoConteudo');
+
+        // Função para Ativo Único com integração Brapi
+        async function analisarTickerUnico() {
+            const ticker = document.getElementById('tickerInput').value.trim();
+            if (!ticker) {
+                alert('Por favor, digite um ticker válido.');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            spinner.classList.remove('hidden');
+            titulo.innerText = `Análise para: ${ticker.toUpperCase()}`;
+            conteudo.innerHTML = `<p class="text-slate-400 text-sm py-8 text-center">Buscando cotações e DRE no yfinance...</p>`;
+            container.scrollIntoView({ behavior: 'smooth' });
+
+            try {
+                const response = await fetch('/analise-ativo-unico', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticker: ticker })
+                });
+                const result = await response.json();
+                
+                spinner.classList.add('hidden');
+
+                if (result.status === 'success') {
+                    const d = result.data;
+                    const badgeLucro = d.Criterio_Lucro_10anos ? '<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold">Aprovado</span>' : '<span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-lg text-xs font-bold">Reprovado</span>';
+                    const badgeYield = d.Criterio_Yield_Maior_6porcento ? '<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold">Aprovado (>6%)</span>' : '<span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-lg text-xs font-bold">Abaixo de 6%</span>';
+                    const badgeGeral = d.Aprovado_Geral ? '<span class="px-3 py-1.5 bg-emerald-600 text-white rounded-full text-xs font-bold shadow-sm">APROVADO NO MÉTODO</span>' : '<span class="px-3 py-1.5 bg-amber-500 text-white rounded-full text-xs font-bold shadow-sm">NÃO ATENDE AOS CRITÉRIOS</span>';
+
+                    const tickerLetras = d.Ticker.replace(/[0-9]/g, '');
+                    const fallbackUrl = `https://ui-avatars.com/api/?name=${tickerLetras}&background=0f172a&color=fff&rounded=true&bold=true&font-size=0.35`;
+                    let logoUrl = fallbackUrl;
+
+                    try {
+                        const brapiRes = await fetch(`https://brapi.dev/api/quote/${d.Ticker}`);
+                        const brapiData = await brapiRes.json();
+                        if (brapiData.results && brapiData.results[0].logourl) {
+                            logoUrl = brapiData.results[0].logourl;
+                        }
+                    } catch (err) {
+                        console.warn('Brapi não retornou a logo. Usando fallback gerado.', err);
+                    }
+
+                    conteudo.innerHTML = `
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
+                            <div class="flex items-center space-x-5">
+                                <img src="${logoUrl}" 
+                                     onerror="this.onerror=null; this.src='${fallbackUrl}';"
+                                     alt="Ícone ${d.Ticker}" 
+                                     class="w-14 h-14 rounded-full shadow-sm border-2 border-slate-200 object-contain bg-white p-1">
+                                
+                                <div>
+                                    <span class="text-xs text-slate-500 uppercase tracking-wider font-semibold">Ativo Analisado</span>
+                                    <h4 class="text-3xl font-black text-slate-900 leading-none mt-1">${d.Ticker}</h4>
+                                </div>
+                            </div>
+                            <div class="mt-4 md:mt-0">${badgeGeral}</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block mb-1">Preço Atual</span>
+                                <span class="text-xl font-bold text-slate-900">R$ ${d['Preço Atual (R$)']}</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block mb-1">Média Div. (5 anos)</span>
+                                <span class="text-xl font-bold text-slate-900">R$ ${d['Média Div. (5 anos)']}</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block mb-1">Dividend Yield Calc.</span>
+                                <span class="text-xl font-bold text-emerald-600">${d['Indicador (%)']}%</span>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block mb-1">Lucro 10 Anos</span>
+                                <div class="mt-1">${badgeLucro}</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-200 flex justify-between items-center">
+                            <span class="font-medium">Critério de Dividend Yield (> 6%):</span>
+                            <div>${badgeYield}</div>
+                        </div>
+                    `;
+                } else {
+                    conteudo.innerHTML = `<div class="text-rose-600 text-sm py-8 text-center font-medium">❌ ${result.message || 'Erro ao processar ativo.'}</div>`;
+                }
+            } catch (err) {
+                spinner.classList.add('hidden');
+                conteudo.innerHTML = `<div class="text-rose-600 text-sm py-8 text-center font-medium">❌ Erro de conexão com o servidor.</div>`;
+            }
+        }
+
+        // Função para a Varredura Global BESST com Batch Fetch de Logos
+        async function executarVarreduraBesst() {
+            container.classList.remove('hidden');
+            spinner.classList.add('hidden'); 
+            titulo.innerText = `Varredura Completa - Setores BESST`;
+            
+            conteudo.innerHTML = `
+                <div class="py-10 text-center space-y-4">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-emerald-500 border-t-transparent"></div>
+                    <p id="loadingStatusText" class="text-sm font-semibold text-slate-700">Mapeando setores essenciais (BESST)...</p>
+                    
+                    <div class="mt-8 max-w-4xl mx-auto opacity-40 animate-pulse">
+                        <div class="h-10 bg-slate-200 rounded-xl mb-3"></div>
+                        <div class="space-y-2">
+                            <div class="h-12 bg-slate-100 rounded-xl"></div>
+                            <div class="h-12 bg-slate-100 rounded-xl"></div>
+                            <div class="h-12 bg-slate-100 rounded-xl"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.scrollIntoView({ behavior: 'smooth' });
+
+            const statusMessages = [
+                "Mapeando setores essenciais (BESST)...",
+                "Extraindo demonstrativos financeiros (DRE) via yfinance...",
+                "Validando histórico de lucros líquidos (10 anos)...",
+                "Calculando Dividend Yield médio (5 anos)...",
+                "Processando avatares e montando dashboard..."
+            ];
+            
+            let msgIndex = 0;
+            const interval = setInterval(() => {
+                msgIndex = (msgIndex + 1) % statusMessages.length;
+                const textEl = document.getElementById('loadingStatusText');
+                if (textEl) textEl.innerText = statusMessages[msgIndex];
+            }, 2200);
+
+            try {
+                const response = await fetch('/analise-besst', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                
+                clearInterval(interval);
+
+                if (result.status === 'success') {
+                    const dados = result.data;
+                    
+                    if (dados.length === 0) {
+                        conteudo.innerHTML = `<p class="text-slate-600 text-sm py-8 text-center">Nenhuma ação atendeu simultaneamente a todos os critérios rigorosos nesta execução.</p>`;
+                        return;
+                    }
+
+                    // BATCH FETCH: Busca todas as logos em uma única chamada para não sobrecarregar
+                    let logosDict = {};
+                    try {
+                        // Exemplo: 'PETR4,VALE3,WEGE3'
+                        const listaTickers = dados.map(d => d.Ticker).join(',');
+                        const brapiRes = await fetch(`https://brapi.dev/api/quote/${listaTickers}`);
+                        const brapiData = await brapiRes.json();
+                        
+                        if (brapiData.results) {
+                            brapiData.results.forEach(stock => {
+                                if (stock.logourl) {
+                                    logosDict[stock.symbol] = stock.logourl;
+                                }
+                            });
+                        }
+                    } catch (err) {
+                        console.warn('Erro ao buscar logos em lote da brapi', err);
+                    }
+
+                    let htmlTable = `
+                        <p class="text-xs text-slate-500 mb-6">Total de empresas aprovadas: <strong class="text-slate-900">${result.total}</strong></p>
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 text-xs uppercase tracking-wider">
+                                    <th class="p-3.5 rounded-l-xl">Ativo</th>
+                                    <th class="p-3.5">Nome</th>
+                                    <th class="p-3.5">Preço Atual</th>
+                                    <th class="p-3.5">Média Div. (5a)</th>
+                                    <th class="p-3.5 rounded-r-xl">Yield (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                    `;
+
+                    dados.forEach(item => {
+                        const tickerLetras = item.Ticker.replace(/[0-9]/g, '');
+                        const fallbackUrl = `https://ui-avatars.com/api/?name=${tickerLetras}&background=0f172a&color=fff&rounded=true&bold=true&font-size=0.35`;
+                        // Pega a logo oficial do dicionário, se não existir, usa o plano B (fallback)
+                        const logoUrl = logosDict[item.Ticker] || fallbackUrl;
+
+                        htmlTable += `
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="p-3.5 flex items-center space-x-3">
+                                    <img src="${logoUrl}" 
+                                         onerror="this.onerror=null; this.src='${fallbackUrl}';"
+                                         alt="${item.Ticker}" 
+                                         class="w-8 h-8 rounded-full border border-slate-200 object-contain bg-white p-0.5">
+                                    <span class="font-mono font-bold text-slate-900">${item.Ticker}</span>
+                                </td>
+                                <td class="p-3.5 text-slate-600">${item.Nome || '-'}</td>
+                                <td class="p-3.5 text-slate-900">R$ ${item['Preço Atual (R$)']}</td>
+                                <td class="p-3.5 text-slate-900">R$ ${item['Média Div. (5 anos)']}</td>
+                                <td class="p-3.5 font-bold text-emerald-600">${item['Indicador (%)']}%</td>
+                            </tr>
+                        `;
+                    });
+
+                    htmlTable += `</tbody></table>`;
+                    conteudo.innerHTML = htmlTable;
+
+                } else {
+                    conteudo.innerHTML = `<div class="text-rose-600 text-sm py-8 text-center font-medium">❌ ${result.message || 'Erro na varredura.'}</div>`;
+                }
+            } catch (err) {
+                clearInterval(interval);
+                conteudo.innerHTML = `<div class="text-rose-600 text-sm py-8 text-center font-medium">❌ Erro de conexão com o servidor.</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
